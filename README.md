@@ -1,0 +1,3 @@
+# Patient_Monitoring
+
+This code is built for the purpose of conducting patient monitoring with the implementation of AI and robotics. We are trying to implement these changes with the targeted audience of medical facilities such as hospitals and clinics. Allowing medical personnel to complete patient monitoring such as body inspection and other required data that is currently being performed by medical personnel. The system currently usses whisper to convert speech to text for Gemini's API to then process the data and turn it into URscript for simulation and real-time purpose. The simulation currently used is Webot's simulation software which usses the URscript produced to simulate the movements before the real-time robot movements.
