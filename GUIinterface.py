@@ -7,7 +7,6 @@ from ur10econtrol import robot as ur10e
 from Transcriber import start_listening, stop_listening
 from webots_interface import move_robot_in_webots
 
-# Define all functions first
 def update_robot_status():
     """Updates the robot connection status indicator."""
     if ur10e.connected:
@@ -85,7 +84,7 @@ def extract_joint_positions(ur_script):
     print("URScript received for extraction:")
     print(ur_script)  # Debug output
 
-    # First try to find movej command with joint angles - more flexible pattern
+    # Try to find movej command with joint angles
     joint_match = re.search(r'movej\s*\(\s*\[\s*([0-9\-., ]+)\s*\]', ur_script)
     if joint_match:
         try:
@@ -100,14 +99,12 @@ def extract_joint_positions(ur_script):
     pose_match = re.search(r'pose_trans\s*\(.*p\s*\[\s*([0-9\-., ]+)\s*\]', ur_script)
     if pose_match:
         try:
-            # Convert TCP pose to approximate joint angles
+            
             tcp_pose = [float(x) for x in pose_match.group(1).split(",")]
             print("ℹ️ Found TCP pose:", tcp_pose)
             
-            # Extract x, y, z from TCP pose
             x, y, z = tcp_pose[0], tcp_pose[1], tcp_pose[2]
             
-            # Convert TCP pose to joint angles with improved Z-axis handling
             joint_angles = [
                 x,                    # Base rotation (from x coordinate)
                 -1.0 - (z * 0.5),    # Shoulder lift (adjust for height)
@@ -138,23 +135,19 @@ root.title("UR10e Speech-to-Command Interface")
 root.geometry("1000x800")
 root.configure(bg="#1E1E1E")
 
-# Modern Styling
 button_style = {"font": ("Arial", 12, "bold"), "bg": "#0078D7", "fg": "white", "width": 25, "height": 2, "bd": 3, "relief": "raised"}
 label_style = {"font": ("Arial", 16, "bold"), "fg": "white", "bg": "#1E1E1E"}
 text_style = {"font": ("Arial", 14), "bg": "#2D2D2D", "fg": "white", "insertbackground": "white", "height": 10, "width": 70, "bd": 2, "relief": "sunken"}
 
-# Status Frame
 status_frame = tk.Frame(root, bg="#1E1E1E")
 status_frame.pack(fill=tk.X, padx=10, pady=5)
 
-# Status indicators
 robot_status = tk.Label(status_frame, text="🔴 Real Robot: Disconnected", font=("Arial", 12), bg="#1E1E1E", fg="white")
 robot_status.pack(side=tk.LEFT, padx=5)
 
 webots_status = tk.Label(status_frame, text="🔵 Webots: Ready", font=("Arial", 12), bg="#1E1E1E", fg="white")
 webots_status.pack(side=tk.LEFT, padx=5)
 
-# Input Section
 input_frame = tk.LabelFrame(root, text="Command Input", bg="#1E1E1E", fg="white", font=("Arial", 14, "bold"))
 input_frame.pack(fill=tk.X, padx=10, pady=5)
 
@@ -181,7 +174,7 @@ script_output.pack(pady=5)
 control_frame = tk.LabelFrame(root, text="Robot Control", bg="#1E1E1E", fg="white", font=("Arial", 14, "bold"))
 control_frame.pack(fill=tk.X, padx=10, pady=5)
 
-# Create two columns for Webots and Real Robot
+# Webots and Real Robot
 columns_frame = tk.Frame(control_frame, bg="#1E1E1E")
 columns_frame.pack(fill=tk.X, padx=10, pady=5)
 
