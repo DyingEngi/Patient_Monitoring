@@ -21,11 +21,9 @@ def generate_ur_script(command_text):
             halt
         end
         
-        # Get current position
         current_joints = get_actual_joint_positions()
         textmsg("Current position: " + str(current_joints))
         
-        # Main movement sequence
         popup("Starting movement sequence", "Info", blocking=True)
         
         # Interpret the command and generate appropriate movements
